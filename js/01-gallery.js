@@ -2,44 +2,65 @@ import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
 const listItemsEl = document.querySelector('.gallery');
-// const itemsEl = document.querySelector('.gallery__item');
-// const linkItemsEl = document.querySelector('.gallery__link');
-// const imageItemsEl = document.querySelector('.gallery__image');
+let instance = null;
 
-listItemsEl.insertAdjacentHTML('beforeend', createGallaryItem(galleryItems));
+console.log(galleryItems);
+
+listItemsEl.insertAdjacentHTML('afterbegin', createGallaryItem(galleryItems));
 
 listItemsEl.addEventListener('click', onGallatyLinkClick);
+
+document.addEventListener('keydown', onEscapeBtnClick);
 
 function createGallaryItem(galleryItems) {
     return galleryItems.map(({ preview, original, description }) => {
         return `<div class="gallery__item">
-        <a class="gallery__link" href=${original}
-            <img class="gallery__image"
-            src=${preview}
-            data-source=${original}
-            alt=${description}
-        />
-    </a>
-</div>`})
-        .join("");
-}
+  <a class="gallery__link" href=${original}>
+    <img
+      class="gallery__image"
+      src=${preview}
+      data-source=${original}
+      alt=${description}
+    />
+  </a>
+</div>`}).join("");
+};
 
 function onGallatyLinkClick(e) {
-     if (e.target.nodeName !== 'A') {
+  if (e.target.nodeName !== 'IMG') {
     return;
-  }
-    e.preventDefault();
+  };
 
-    console.log(e);
-    console.log(e.target);
-    console.log(e.currentTarget);
+  e.preventDefault();
 
+  openModal(e);
 
-    const instance = basicLightbox.create(`
-    <img src=${e.target.dataset.source} width="800" height="600">`);
+  console.dir(e.target.dataset.source);
+}
 
-    instance.show();
+function onEscapeBtnClick(e) {
+  if (e.key !== 'Escape') {
+    return;
+  };
+  closeModal();
+
+}
+
+function openModal(e) {
+  instance = basicLightbox.create(`
+    <img src=${e.target.dataset.source} width="800" height="600">
+`);
+  
+  instance.show();
+
+  document.addEventListener('keydown', onEscapeBtnClick);  
+}
+  
+function closeModal() {
+  instance.close();
+  
+  document.removeEventListener('keydown', onEscapeBtnClick);  
 }
 
 
-console.log(galleryItems);
+
