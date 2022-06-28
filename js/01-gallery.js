@@ -1,6 +1,6 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-let instance = null;
+let instance;
 
 const listItemsEl = document.querySelector('.gallery');
 
