@@ -19,7 +19,7 @@ function createGallaryItem(galleryItems) {
 };
 
 let lightbox = new SimpleLightbox('.gallery a', {
-        sourceAttr: 'href',
+  
         captions: true,
         captionType: 'text',
         captionsData: 'alt',

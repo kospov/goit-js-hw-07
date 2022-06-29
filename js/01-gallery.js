@@ -1,54 +1,51 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-let lightbox;
+let instance;
 
 const listItemsEl = document.querySelector('.gallery');
 
 console.log(galleryItems);
-
 listItemsEl.insertAdjacentHTML('afterbegin', createGallaryItem(galleryItems));
-
 listItemsEl.addEventListener('click', onGallatyLinkClick);
-
 document.addEventListener('keydown', onEscapeBtnClick);
-
 function createGallaryItem(galleryItems) {
     return galleryItems.map(({ preview, original, description }) => {
-        return `<a class="gallery__item" href=${original}>
-  <img class="gallery__image" src=${preview} alt=${description} />
-</a>`}).join("");
+        return `<div class="gallery__item">
+  <a class="gallery__link" href=${original}>
+    <img
+      class="gallery__image"
+      src=${preview}
+      data-source=${original}
+      alt=${description}
+    />
+  </a>
+</div>`}).join("");
 };
-
 function onGallatyLinkClick(e) {
   if (e.target.nodeName !== 'IMG') {
     return;
   };
-
   e.preventDefault();
-
   openModal(e);
-
   console.dir(e.target.dataset.source);
 }
-
 function onEscapeBtnClick(e) {
   if (e.key !== 'Escape') {
     return;
   };
   closeModal();
-
 }
-
 function openModal(e) {
-  lightbox = new SimpleLightbox('.gallery a', { /* options */ });
+  instance = basicLightbox.create(`
+    <img src=${e.target.dataset.source} width="800" height="600">
+`);
   
-  lightbox.open();
-
+  instance.show();
   document.addEventListener('keydown', onEscapeBtnClick);  
 }
   
-// function closeModal() {
-//   lightbox.close();
+function closeModal() {
+  instance.close();
   
-//   document.removeEventListener('keydown', onEscapeBtnClick);  
-// }
+  document.removeEventListener('keydown', onEscapeBtnClick);  
+}
