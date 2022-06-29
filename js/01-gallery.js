@@ -1,6 +1,6 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-let instance;
+let lightbox;
 
 const listItemsEl = document.querySelector('.gallery');
 
@@ -14,16 +14,9 @@ document.addEventListener('keydown', onEscapeBtnClick);
 
 function createGallaryItem(galleryItems) {
     return galleryItems.map(({ preview, original, description }) => {
-        return `<div class="gallery__item">
-  <a class="gallery__link" href=${original}>
-    <img
-      class="gallery__image"
-      src=${preview}
-      data-source=${original}
-      alt=${description}
-    />
-  </a>
-</div>`}).join("");
+        return `<a class="gallery__item" href=${original}>
+  <img class="gallery__image" src=${preview} alt=${description} />
+</a>`}).join("");
 };
 
 function onGallatyLinkClick(e) {
@@ -47,20 +40,15 @@ function onEscapeBtnClick(e) {
 }
 
 function openModal(e) {
-  instance = basicLightbox.create(`
-    <img src=${e.target.dataset.source} width="800" height="600">
-`);
+  lightbox = new SimpleLightbox('.gallery a', { /* options */ });
   
-  instance.show();
+  lightbox.open();
 
   document.addEventListener('keydown', onEscapeBtnClick);  
 }
   
-function closeModal() {
-  instance.close();
+// function closeModal() {
+//   lightbox.close();
   
-  document.removeEventListener('keydown', onEscapeBtnClick);  
-}
-
-
-
+//   document.removeEventListener('keydown', onEscapeBtnClick);  
+// }
